@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function Home() {
   const [data, setData] = useState({ list: [] });
-  console.log(data);
-  const navigate = useNavigate();
+
   const [values, setValues] = useState({
     postcodeFrom: "",
     postcodeTo: "",
@@ -25,7 +24,7 @@ function Home() {
     if (confirm) {
       axios
         .delete("http://localhost:8080/vpp/battery/" + id)
-        .then((res) => {
+        .then((_res) => {
           window.location.reload();
         })
         .catch((err) => console.log(err));
@@ -44,7 +43,7 @@ function Home() {
       .catch((err) => console.log(err));
   };
 
-  if (data === {}) return <div>Loading...</div>;
+  if (data === { list: [] }) return <div>Loading...</div>;
 
   return (
     <div className="d-flex flex-column justify-content-center align-items-center bg-light vh-100">
@@ -101,35 +100,34 @@ function Home() {
             </tr>
           </thead>
           <tbody>
-            {data &&
-              data?.list.map((d, i) => (
-                <tr key={i}>
-                  <td>{d.id}</td>
-                  <td>{d.name}</td>
-                  <td>{d.postcode}</td>
-                  <td>{d.capacity}</td>
-                  <td>
-                    <Link
-                      to={`/view/${d.id}`}
-                      className="btn btn-sm btn-info me-2"
-                    >
-                      View
-                    </Link>
-                    <Link
-                      to={`/update/${d.id}`}
-                      className="btn btn-sm btn-primary me-2"
-                    >
-                      Edit
-                    </Link>
-                    <button
-                      onClick={(e) => handleDelete(d.id)}
-                      className="btn btn-sm btn-danger"
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              ))}
+            {data?.list.map((d, i) => (
+              <tr key={i}>
+                <td>{d.id}</td>
+                <td>{d.name}</td>
+                <td>{d.postcode}</td>
+                <td>{d.capacity}</td>
+                <td>
+                  <Link
+                    to={`/view/${d.id}`}
+                    className="btn btn-sm btn-info me-2"
+                  >
+                    View
+                  </Link>
+                  <Link
+                    to={`/update/${d.id}`}
+                    className="btn btn-sm btn-primary me-2"
+                  >
+                    Edit
+                  </Link>
+                  <button
+                    onClick={(e) => handleDelete(d.id)}
+                    className="btn btn-sm btn-danger"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
